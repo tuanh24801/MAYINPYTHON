@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng dụng Web In Đơn Hàng</title>
+</head>
+<body>
+    <h1>In Đơn Hàng</h1>
+    
+    <form id="orderForm">
+        <label for="orderId">Mã Đơn Hàng:</label>
+        <input type="text" id="orderId" name="orderId"><br><br>
+        
+        <label for="customerName">Tên Khách Hàng:</label>
+        <input type="text" id="customerName" name="customerName"><br><br>
+        
+        <label for="item">Sản Phẩm:</label>
+        <input type="text" id="item" name="item"><br><br>
+        
+        <label for="quantity">Số Lượng:</label>
+        <input type="number" id="quantity" name="quantity"><br><br>
+        
+        <label for="price">Giá:</label>
+        <input type="number" id="price" name="price"><br><br>
+        
+        <button type="button" onclick="sendPrintCommand()">Gửi Lệnh In</button>
+    </form>
+
+    <script>
+        // Hàm gửi lệnh in tới ứng dụng desktop qua socket
+        function sendPrintCommand() {
+            // Lấy dữ liệu đơn hàng từ form
+            const orderData = {
+                order_id: document.getElementById('orderId').value,
+                customer_name: document.getElementById('customerName').value,
+                item: document.getElementById('item').value,
+                quantity: document.getElementById('quantity').value,
+                price: document.getElementById('price').value
+            };
+
+            // Tạo một WebSocket kết nối tới server desktop
+            const socket = new WebSocket('ws://localhost:9999');  // Địa chỉ của server desktop
+
+            socket.onopen = function() {
+                // Gửi dữ liệu đơn hàng dưới dạng JSON khi kết nối được mở
+                socket.send(JSON.stringify(orderData));
+                alert("Lệnh in đã được gửi!");
+                socket.close();
+            };
+
+            socket.onerror = function(error) {
+                alert("Lỗi kết nối: " + error.message);
+            };
+        }
+    </script>
+</body>
+</html>
