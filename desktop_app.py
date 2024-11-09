@@ -61,6 +61,7 @@ def print_order(order_data, printer_name):
 
         max_width = 600
         content_lines = [
+            f"TUẤN ANH POS",
             f"Đơn hàng: {order_data['order_id']}",
             f"Khách hàng: {order_data['customer_name']}",
             f"Sản phẩm: {order_data['item']}",
